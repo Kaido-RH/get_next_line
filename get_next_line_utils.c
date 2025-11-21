@@ -6,7 +6,7 @@
 /*   By: ahrahmou <ahrahmou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 01:45:23 by ahrahmou          #+#    #+#             */
-/*   Updated: 2025/11/20 22:32:50 by ahrahmou         ###   ########.fr       */
+/*   Updated: 2025/11/21 04:24:05 by ahrahmou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,10 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	char	*str;
 
 	i = 0;
-	if (s == NULL || len == 0)
+	if (s == NULL)
 		return (NULL);
+	if (len == 0)
+		return (ft_strdup(""));
 	slen = ft_strlen(s);
 	if (start >= slen)
 		return (ft_strdup(""));

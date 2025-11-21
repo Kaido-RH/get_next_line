@@ -6,7 +6,7 @@
 /*   By: ahrahmou <ahrahmou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/15 10:37:36 by ahrahmou          #+#    #+#             */
-/*   Updated: 2025/11/20 21:54:51 by ahrahmou         ###   ########.fr       */
+/*   Updated: 2025/11/21 07:43:29 by ahrahmou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,30 @@ size_t	ft_strlen(const char *str)
 	return (i);
 }
 
+void	free_leftover(char **leftover, char *tmp, size_t len)
+{
+	tmp = ft_substr(*leftover, len, ft_strlen(*leftover) - len);
+	free(*leftover);
+	*leftover = (NULL);
+	*leftover = tmp;
+	if (!*leftover)
+	{
+		free(*leftover);
+		return ;
+	}
+	if (**leftover == '\0')
+	{
+		free(*leftover);
+		*leftover = NULL;
+	}
+	return ;
+}
+
 char	*new_line(char **leftover)
 {
 	char		*new_line;
 	size_t		len;
 	char		*line;
-	char		*tmp;
 
 	if (!*leftover)
 		return (NULL);
@@ -36,9 +54,9 @@ char	*new_line(char **leftover)
 	{
 		len = new_line - *leftover + 1;
 		line = ft_substr(*leftover, 0, len);
-		tmp = ft_substr(*leftover, len, ft_strlen(*leftover) - len);
-		free(*leftover);
-		*leftover = tmp;
+		if (!line)
+			return (free(*leftover), *leftover = NULL, NULL);
+		free_leftover(leftover, line, len);
 	}
 	else
 	{
@@ -60,9 +78,7 @@ char	*fill_leftover(int fd, ssize_t bytes, char *buf, char **leftover)
 		free(*leftover);
 		*leftover = tmp;
 		if (!*leftover)
-		{
 			return (NULL);
-		}
 		if (ft_strchr(*leftover, '\n'))
 			break ;
 		bytes = read(fd, buf, BUFFER_SIZE);
@@ -82,12 +98,11 @@ char	*get_next_line(int fd)
 	char		*buf;
 	static char	*leftover;
 
-	bytes = 0;
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
+	if (leftover && ft_strchr(leftover, '\n'))
+		return (new_line(&leftover));
 	buf = malloc(BUFFER_SIZE +1);
-	if (!buf)
-		return (NULL);
 	bytes = read(fd, buf, BUFFER_SIZE);
 	if (bytes == -1)
 	{
