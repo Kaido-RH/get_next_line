@@ -42,7 +42,7 @@ cc -Wall -Wextra -Werror get_next_line.c get_next_line_utils.c get_next_line.h
 You can define a custom `BUFFER_SIZE` during compilation:
 
 ```bash
-cc -Wall -Wextra -Werror -D BUFFER_SIZE=42 get_next_line.c get_next_line_utils.c get_next_line.h
+cc -Wall -Wextra -Werror -DBUFFER_SIZE=42 get_next_line.c get_next_line_utils.c get_next_line.h
 ```
 
 The default `BUFFER_SIZE` is set to 10 in the header file if not specified.
