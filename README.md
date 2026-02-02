@@ -1,3 +1,5 @@
+*This project has been created as part of the 42 curriculum by ahrahmou*
+
 # get_next_line
 
 A C function that reads a line from a file descriptor, one line at a time.
